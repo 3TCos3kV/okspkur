@@ -1,0 +1,415 @@
+openapi: 3.0.3
+info:
+  title: Запись на приём к специалисту
+  version: 1.0.0
+  description: |
+    Учебный сервис курсовой работы по дисциплине «Оптимизация клиент-серверных приложений», вариант 3.
+
+    Хранит расписание специалистов слотами, показывает свободные слоты под услугу, бронирует и отменяет записи,
+    считает загрузку специалистов и долю отмен.
+
+    **Как попробовать.** Выполните `POST /api/auth/login` с `admin` / `demo`, скопируйте `token`
+    в кнопку **Authorize** — дальше все запросы пойдут от имени этого пользователя.
+
+    Моменты времени — ISO 8601 со смещением пояса Europe/Moscow, даты в параметрах — `YYYY-MM-DD` в том же поясе;
+    `to` включается в период целиком.
+servers:
+  - url: /
+tags:
+  - name: Авторизация
+    description: Получение bearer-токена
+  - name: Записи
+    description: Основная сущность варианта — список, карточка, бронирование, отмена
+  - name: Расписание
+    description: Услуги и свободные слоты
+  - name: Сводка
+    description: Итоговые показатели по всем данным периода
+security:
+  - bearerAuth: []
+
+paths:
+  /api/auth/login:
+    post:
+      operationId: login
+      tags: [Авторизация]
+      summary: Вход и получение токена
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+            example: { login: admin, password: demo }
+      responses:
+        '200':
+          description: Токен доступа
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Token' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401':
+          description: Неверные логин или пароль
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example: { error: Неверные логин или пароль }
+
+  /api/bookings:
+    get:
+      operationId: listBookings
+      tags: [Записи]
+      summary: Список записей с фильтром и постраничным выводом
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - name: status
+          in: query
+          schema: { $ref: '#/components/schemas/BookingStatus' }
+        - name: specialistId
+          in: query
+          schema: { type: integer, format: int64, minimum: 1 }
+        - name: from
+          in: query
+          description: Начало записи не раньше этой даты
+          schema: { type: string, format: date, example: '2026-10-01' }
+        - name: to
+          in: query
+          description: Начало записи не позже этой даты включительно
+          schema: { type: string, format: date, example: '2026-10-31' }
+      responses:
+        '200':
+          description: Страница записей, отсортированных по началу слота от новых к старым
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BookingPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+    post:
+      operationId: createBooking
+      tags: [Записи]
+      summary: Забронировать слот под услугу
+      description: |
+        Запись занимает слот целиком и оформляется на пользователя, который выполнил вход.
+        Отклоняется, если у слота уже есть активная запись (409), услуга относится к другой специальности
+        или длиннее слота (422).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateBooking' }
+      responses:
+        '201':
+          description: Созданная запись
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BookingCard' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+
+  /api/bookings/{id}:
+    get:
+      operationId: getBooking
+      tags: [Записи]
+      summary: Карточка записи со связанными сущностями
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Запись, её слот, специалист, услуга и клиент
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BookingCard' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /api/bookings/{id}/cancel:
+    post:
+      operationId: cancelBooking
+      tags: [Записи]
+      summary: Отменить запись
+      description: Переводит запись в `cancelled`, слот снова становится свободным.
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: Отменённая запись
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BookingCard' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /api/services:
+    get:
+      operationId: listServices
+      tags: [Расписание]
+      summary: Список услуг
+      responses:
+        '200':
+          description: Все услуги
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Service' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /api/services/{id}/free-slots:
+    get:
+      operationId: listFreeSlots
+      tags: [Расписание]
+      summary: Свободные слоты под услугу
+      description: Слоты специалистов той же специальности, не короче услуги и без активной записи.
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - name: from
+          in: query
+          required: true
+          schema: { type: string, format: date, example: '2026-10-12' }
+        - name: to
+          in: query
+          required: true
+          schema: { type: string, format: date, example: '2026-10-18' }
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+      responses:
+        '200':
+          description: Страница свободных слотов, отсортированных по началу от ранних к поздним
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FreeSlotPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+
+  /api/summary:
+    get:
+      operationId: getSummary
+      tags: [Сводка]
+      summary: Загрузка специалистов и доля отмен за период
+      description: |
+        Учитываются слоты и записи, начало которых попадает в период. Загрузка — минуты слотов с активной
+        записью от минут всех слотов специалиста; доля отмен — отменённые записи от всех записей периода.
+        Специалисты без слотов в периоде тоже входят в ответ, порядок — по id.
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema: { type: string, format: date, example: '2026-09-01' }
+        - name: to
+          in: query
+          required: true
+          schema: { type: string, format: date, example: '2026-09-30' }
+      responses:
+        '200':
+          description: Сводка по всем записям периода
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Summary' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer, format: int64, minimum: 1 }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    Size:
+      name: size
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+
+  responses:
+    BadRequest:
+      description: Тело запроса не разбирается или в нём нет обязательного поля
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: Некорректное тело запроса }
+    Unauthorized:
+      description: Нет токена, токен неверен или истёк
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: Требуется авторизация }
+    NotFound:
+      description: Запись, слот или услуга не найдены
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: Запись не найдена }
+    Conflict:
+      description: У слота уже есть активная запись или запись уже отменена
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: Слот уже занят }
+    Unprocessable:
+      description: Параметр вне допустимых значений или услуга не подходит слоту
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { error: Услуга длиннее слота }
+
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+
+    LoginRequest:
+      type: object
+      required: [login, password]
+      properties:
+        login: { type: string, example: admin }
+        password: { type: string, format: password, example: demo }
+
+    Token:
+      type: object
+      required: [token]
+      properties:
+        token: { type: string, example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.c2lnbmF0dXJl }
+
+    BookingStatus:
+      type: string
+      enum: [active, cancelled]
+
+    SpecialistRef:
+      type: object
+      required: [id, fullName, specialty]
+      properties:
+        id: { type: integer, format: int64, example: 17 }
+        fullName: { type: string, example: Попов Б. А. }
+        specialty: { type: string, example: Кардиолог }
+
+    ServiceRef:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: integer, format: int64, example: 5 }
+        name: { type: string, example: 'Кардиолог: приём' }
+
+    Service:
+      type: object
+      required: [id, name, specialty, durationMin]
+      properties:
+        id: { type: integer, format: int64, example: 5 }
+        name: { type: string, example: 'Кардиолог: приём' }
+        specialty: { type: string, example: Кардиолог }
+        durationMin: { type: integer, example: 60 }
+
+    Slot:
+      type: object
+      required: [id, startsAt, endsAt]
+      properties:
+        id: { type: integer, format: int64, example: 16021 }
+        startsAt: { type: string, format: date-time, example: '2026-10-12T10:30:00+03:00' }
+        endsAt: { type: string, format: date-time, example: '2026-10-12T12:00:00+03:00' }
+
+    Client:
+      type: object
+      required: [id, fullName, login]
+      properties:
+        id: { type: integer, format: int64, example: 214 }
+        fullName: { type: string, example: Смирнов Д. В. }
+        login: { type: string, example: client00213 }
+
+    BookingRow:
+      type: object
+      description: Строка списка; startsAt и endsAt — границы слота
+      required: [id, startsAt, endsAt, status, specialist, service, clientName]
+      properties:
+        id: { type: integer, format: int64, example: 1042 }
+        startsAt: { type: string, format: date-time, example: '2026-10-12T10:30:00+03:00' }
+        endsAt: { type: string, format: date-time, example: '2026-10-12T12:00:00+03:00' }
+        status: { $ref: '#/components/schemas/BookingStatus' }
+        specialist: { $ref: '#/components/schemas/SpecialistRef' }
+        service: { $ref: '#/components/schemas/ServiceRef' }
+        clientName: { type: string, example: Смирнов Д. В. }
+
+    BookingPage:
+      type: object
+      required: [items, total]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/BookingRow' }
+        total: { type: integer, format: int64, example: 80000 }
+
+    BookingCard:
+      type: object
+      required: [id, status, createdAt, cancelledAt, slot, specialist, service, client]
+      properties:
+        id: { type: integer, format: int64, example: 1042 }
+        status: { $ref: '#/components/schemas/BookingStatus' }
+        createdAt: { type: string, format: date-time, example: '2026-10-01T10:30:00+03:00' }
+        cancelledAt: { type: string, format: date-time, nullable: true, example: null }
+        slot: { $ref: '#/components/schemas/Slot' }
+        specialist: { $ref: '#/components/schemas/SpecialistRef' }
+        service: { $ref: '#/components/schemas/Service' }
+        client: { $ref: '#/components/schemas/Client' }
+
+    CreateBooking:
+      type: object
+      required: [slotId, serviceId]
+      properties:
+        slotId: { type: integer, format: int64, example: 16021 }
+        serviceId: { type: integer, format: int64, example: 5 }
+
+    FreeSlot:
+      type: object
+      required: [id, startsAt, endsAt, specialist]
+      properties:
+        id: { type: integer, format: int64, example: 16021 }
+        startsAt: { type: string, format: date-time, example: '2026-10-12T10:30:00+03:00' }
+        endsAt: { type: string, format: date-time, example: '2026-10-12T12:00:00+03:00' }
+        specialist: { $ref: '#/components/schemas/SpecialistRef' }
+
+    FreeSlotPage:
+      type: object
+      required: [items, total]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/FreeSlot' }
+        total: { type: integer, format: int64, example: 412 }
+
+    SpecialistLoad:
+      type: object
+      required: [id, fullName, specialty, slotMinutes, bookedMinutes, load]
+      properties:
+        id: { type: integer, format: int64, example: 17 }
+        fullName: { type: string, example: Попов Б. А. }
+        specialty: { type: string, example: Кардиолог }
+        slotMinutes: { type: integer, format: int64, example: 9900 }
+        bookedMinutes: { type: integer, format: int64, example: 3120 }
+        load: { type: number, format: double, minimum: 0, maximum: 1, example: 0.315 }
+
+    Summary:
+      type: object
+      required: [from, to, totalBookings, cancelledShare, specialists]
+      properties:
+        from: { type: string, format: date, example: '2026-09-01' }
+        to: { type: string, format: date, example: '2026-09-30' }
+        totalBookings: { type: integer, format: int64, example: 13250 }
+        cancelledShare: { type: number, format: double, minimum: 0, maximum: 1, example: 0.143 }
+        specialists:
+          type: array
+          items: { $ref: '#/components/schemas/SpecialistLoad' }

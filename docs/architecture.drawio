@@ -1,0 +1,194 @@
+<mxfile host="drawio-plugin" modified="2026-10-04T18:57:29.249Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="22.1.22" etag="P-xfYoX2w2duH5QTqBYO" type="embed">
+  <diagram id="architecture" name="Architecture">
+    <mxGraphModel dx="2412" dy="1131" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1380" pageHeight="1000" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="layerPresentation" value="Presentation (Ktor)" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;dashed=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="10" y="90" width="1340" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="layerApplication" value="Application" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;dashed=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="230" y="320" width="840" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="portsGroup" value="Ports" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;dashed=1;dashPattern=1 3;verticalAlign=top;align=left;spacingLeft=8;spacingTop=2;fontStyle=2;" parent="1" vertex="1">
+          <mxGeometry x="240" y="460" width="820" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="layerDomain" value="Domain" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;dashed=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1090" y="320" width="260" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="layerInfrastructure" value="Infrastructure" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;dashed=1;verticalAlign=top;align=left;spacingLeft=8;spacingTop=4;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="10" y="640" width="1060" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="&lt;b&gt;Web client&lt;/b&gt;&lt;br&gt;index.html, app.js" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="490" y="10" width="380" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="requestMetrics" value="&lt;b&gt;RequestMetrics&lt;/b&gt;&lt;br&gt;timing headers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="30" y="125" width="160" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="jwtAuth" value="&lt;b&gt;JwtAuthentication&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="250" y="130" width="620" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="authRoutes" value="&lt;b&gt;AuthRoutes&lt;/b&gt;&lt;br&gt;/api/auth" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="30" y="215" width="160" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="scheduleRoutes" value="&lt;b&gt;ScheduleRoutes&lt;/b&gt;&lt;br&gt;/api/services" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="250" y="215" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="summaryRoutes" value="&lt;b&gt;SummaryRoutes&lt;/b&gt;&lt;br&gt;/api/summary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="470" y="215" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="bookingRoutes" value="&lt;b&gt;BookingRoutes&lt;/b&gt;&lt;br&gt;/api/bookings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="690" y="215" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="statusPages" value="&lt;b&gt;StatusPages&lt;/b&gt;&lt;br&gt;DomainError to HTTP status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1110" y="215" width="220" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="scheduleService" value="&lt;b&gt;ScheduleService&lt;/b&gt;&lt;br&gt;services, free slots" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="250" y="360" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="summaryService" value="&lt;b&gt;SummaryService&lt;/b&gt;&lt;br&gt;load, cancelled share" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="470" y="360" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="bookingService" value="&lt;b&gt;BookingService&lt;/b&gt;&lt;br&gt;list, card, book, cancel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="690" y="360" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="scheduleRepository" value="&lt;i&gt;ScheduleRepository&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="250" y="520" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="summaryRepository" value="&lt;i&gt;SummaryRepository&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="470" y="520" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="bookingRepository" value="&lt;i&gt;BookingRepository&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="690" y="520" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="transactionRunner" value="&lt;i&gt;TransactionRunner&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="910" y="520" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="domainErrors" value="&lt;b&gt;DomainErrors&lt;/b&gt;&lt;br&gt;NotFound, Conflict, Invalid" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1110" y="360" width="220" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="bookingPolicy" value="&lt;b&gt;BookingPolicy&lt;/b&gt;&lt;br&gt;free slot, specialty, duration, cancel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1110" y="465" width="220" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="entities" value="&lt;b&gt;Entities&lt;/b&gt;&lt;br&gt;Specialist, Service, Slot, Booking" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="1110" y="610" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="authenticator" value="&lt;b&gt;Authenticator&lt;/b&gt;&lt;br&gt;bcrypt, JWT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="30" y="680" width="160" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="exposedRepos" value="&lt;b&gt;ExposedRepositories&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="250" y="680" width="800" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="database" value="&lt;b&gt;Database&lt;/b&gt;&lt;br&gt;HikariCP, SqlMetrics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="30" y="765" width="620" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="seeder" value="&lt;b&gt;Seeder&lt;/b&gt;&lt;br&gt;small, working" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="690" y="765" width="360" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" value="&lt;b&gt;PostgreSQL 16&lt;/b&gt;&lt;br&gt;schema ivan_tikhonov" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=none;strokeColor=default;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="570" y="870" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="eBrowser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="browser" target="layerPresentation" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eSchedJwt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="scheduleRoutes" target="jwtAuth" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eSumJwt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="summaryRoutes" target="jwtAuth" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eBookJwt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="bookingRoutes" target="jwtAuth" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAuthRoutes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="authRoutes" target="authenticator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eMetricsDb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.298;entryY=0;entryDx=0;entryDy=0;" parent="1" source="requestMetrics" target="database" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="215" y="157" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eSchedRoutes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="scheduleRoutes" target="scheduleService" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eSumRoutes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="summaryRoutes" target="summaryService" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eBookRoutes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="bookingRoutes" target="bookingService" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eStatusPages" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="statusPages" target="domainErrors" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eSchedRepo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.4;exitY=1;exitDx=0;exitDy=0;entryX=0.4;entryY=0;entryDx=0;entryDy=0;" parent="1" source="scheduleService" target="scheduleRepository" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eSumRepo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="summaryService" target="summaryRepository" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eBookRepo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="bookingService" target="bookingRepository" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eBookSched" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.85;entryY=0;entryDx=0;entryDy=0;" parent="1" source="bookingService" target="scheduleRepository" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="717" y="440" />
+              <mxPoint x="403" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eBookTx" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.85;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="bookingService" target="transactionRunner" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="843" y="440" />
+              <mxPoint x="980" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eBookPolicy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="bookingService" target="bookingPolicy" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1080" y="387" />
+              <mxPoint x="1080" y="497" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ePolicyErrors" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="bookingPolicy" target="domainErrors" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ePolicyEntities" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;" parent="1" source="bookingPolicy" target="entities" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ePortsEntities" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="portsGroup" target="entities" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eExpSched" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.1125;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="exposedRepos" target="scheduleRepository" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eExpSum" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.3875;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="exposedRepos" target="summaryRepository" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eExpBook" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.6625;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="exposedRepos" target="bookingRepository" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eExpTx" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.9125;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="exposedRepos" target="transactionRunner" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eExpDb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.677;entryY=0;entryDx=0;entryDy=0;" parent="1" source="exposedRepos" target="database" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eAuthDb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.129;entryY=0;entryDx=0;entryDy=0;" parent="1" source="authenticator" target="database" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eDbPg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.935;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="database" target="postgres" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eSeederPg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endSize=8;strokeColor=default;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="seeder" target="postgres" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

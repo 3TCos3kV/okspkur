@@ -1,0 +1,77 @@
+{
+  "conditions": {
+    "label": "working",
+    "base": "http://localhost:8080",
+    "user": "admin",
+    "warmup": 3,
+    "repeats": 30,
+    "machine": "Darwin 24.0.0 arm64",
+    "at": "2026-10-05 21:45",
+    "bookings_added": 33
+  },
+  "results": {
+    "POST /api/auth/login": {
+      "p50": 69.325,
+      "p95": 71.42,
+      "max": 71.71,
+      "db_p50": 0.26,
+      "queries": 1.0
+    },
+    "GET /api/bookings": {
+      "p50": 59.15,
+      "p95": 79.48,
+      "max": 86.52,
+      "db_p50": 57.705,
+      "queries": 2.0
+    },
+    "GET /api/bookings (фильтр)": {
+      "p50": 19.384999999999998,
+      "p95": 25.8,
+      "max": 26.65,
+      "db_p50": 18.564999999999998,
+      "queries": 2.0
+    },
+    "GET /api/bookings/{id}": {
+      "p50": 0.52,
+      "p95": 0.61,
+      "max": 0.73,
+      "db_p50": 0.165,
+      "queries": 1.0
+    },
+    "GET /api/services": {
+      "p50": 0.495,
+      "p95": 0.85,
+      "max": 1.28,
+      "db_p50": 0.13,
+      "queries": 1.0
+    },
+    "GET /api/services/{id}/free-slots": {
+      "p50": 20.725,
+      "p95": 22.6,
+      "max": 23.6,
+      "db_p50": 19.985,
+      "queries": 3.0
+    },
+    "GET /api/summary": {
+      "p50": 36.585,
+      "p95": 40.48,
+      "max": 40.49,
+      "db_p50": 35.69,
+      "queries": 2.0
+    },
+    "POST /api/bookings": {
+      "p50": 3.8049999999999997,
+      "p95": 4.3,
+      "max": 5.37,
+      "db_p50": 3.105,
+      "queries": 6.0
+    },
+    "POST /api/bookings/{id}/cancel": {
+      "p50": 0.865,
+      "p95": 1.84,
+      "max": 2.1,
+      "db_p50": 0.335,
+      "queries": 3.0
+    }
+  }
+}

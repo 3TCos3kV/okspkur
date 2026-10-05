@@ -1,0 +1,36 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+local.properties
+
+# Kotlin
+.kotlin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Python (bench/)
+__pycache__/
+*.pyc
+.venv/
+
+# Окружение: секреты остаются локально, пример лежит в .env.example
+.env
+.env.*
+!.env.example
+
+# Журналы, дампы и снимки профилировщика
+*.log
+*.hprof
+*.jfr

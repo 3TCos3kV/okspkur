@@ -1,0 +1,56 @@
+name: ivan_tikhonov
+
+x-db-env: &db-env
+  DATABASE_URL: jdbc:postgresql://db:5432/ivan_tikhonov
+  DB_USER: ivan_tikhonov
+  DB_PASSWORD: ${DB_PASSWORD:-changeme}
+  DB_SCHEMA: ivan_tikhonov
+
+services:
+  db:
+    image: postgres:16.15-alpine
+    environment:
+      POSTGRES_DB: ivan_tikhonov
+      POSTGRES_USER: ivan_tikhonov
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+    command: >
+      postgres
+      -c shared_preload_libraries=pg_stat_statements
+      -c pg_stat_statements.track=all
+    ports:
+      - "${DB_PORT:-26432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ivan_tikhonov -d ivan_tikhonov"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    image: ivan_tikhonov-app
+    environment:
+      <<: *db-env
+      DB_POOL_SIZE: ${DB_POOL_SIZE:-10}
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs -o /dev/null http://localhost:8080/"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  seed:
+    image: ivan_tikhonov-app
+    profiles: ["tools"]
+    environment: *db-env
+    entrypoint: ["java", "-cp", "lib/*", "com.acute.infrastructure.seed.SeederKt"]
+    depends_on:
+      db: {condition: service_healthy}
+
+volumes:
+  db-data:

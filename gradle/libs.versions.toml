@@ -1,0 +1,23 @@
+[versions]
+bcrypt = "0.10.2"
+exposed = "1.3.1"
+hikari = "6.3.3"
+junit = "1.12.2"
+kotlin = "2.4.0"
+logback = "1.5.37"
+postgresql = "42.7.13"
+
+[libraries]
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
+bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "bcrypt" }
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-java-time = { module = "org.jetbrains.exposed:exposed-java-time", version.ref = "exposed" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
